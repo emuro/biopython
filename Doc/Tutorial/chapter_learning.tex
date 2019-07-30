@@ -7,6 +7,7 @@ Note the supervised learning methods described in this chapter all require Numer
 \label{sec:LogisticRegression}
 
 \subsection{Background and Purpose}
+\label{sec:LogisticRegressionBackground}
 
 Logistic regression is a supervised learning approach that attempts to distinguish $K$ classes from each other using a weighted sum of some predictor variables $x_i$. The logistic regression model is used to calculate the weights $\beta_i$ of the predictor variables. In Biopython, the logistic regression model is currently implemented for two classes only ($K = 2$); the number of predictor variables has no predefined limit.
 
@@ -34,10 +35,10 @@ The logistic regression model gives us appropriate values for the parameters $\b
 
 In the logistic regression model, the probability of belonging to a class depends on the score via the logistic function. For the two classes OP and NOP, we can write this as
 \begin{eqnarray}
-\Pr(\mathrm{OP}|x_1, x_2) & = & \frac{\exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2)}{1+\exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2)} \label{eq:OP} \\
-\Pr(\mathrm{NOP}|x_1, x_2) & = & \frac{1}{1+\exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2)} \label{eq:NOP}
+\Pr(\mathrm{OP}|x_1, x_2) & = & \frac{\exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2)}{1+\exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2)} \\
+\Pr(\mathrm{NOP}|x_1, x_2) & = & \frac{1}{1+\exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2)}
 \end{eqnarray}
-Using a set of gene pairs for which it is known whether they belong to the same operon (class OP) or to different operons (class NOP), we can calculate the weights $\beta_0$, $\beta_1$, $\beta_2$ by maximizing the log-likelihood corresponding to the probability functions (\ref{eq:OP}) and (\ref{eq:NOP}).
+Using a set of gene pairs for which it is known whether they belong to the same operon (class OP) or to different operons (class NOP), we can calculate the weights $\beta_0$, $\beta_1$, $\beta_2$ by maximizing the log-likelihood corresponding to these probability functions.
 
 \subsection{Training the logistic regression model}
 \label{sec:LogisticRegressionTraining}
@@ -208,7 +209,8 @@ yxiB, yxiA: 0
 \end{minted}
 (which, by the way, agrees with the biological literature).
 
-To find out how confident we can be in these predictions, we can call the \verb+calculate+ function to obtain the probabilities (equations (\ref{eq:OP}) and \ref{eq:NOP}) for class OP and NOP. For \textit{yxcE}, \textit{yxcD} we find
+To find out how confident we can be in these predictions, we can call the \verb+calculate+ function to obtain the probabilities for class OP and NOP (using the equations introduced in Section~\ref{sec:LogisticRegressionBackground}).
+For \textit{yxcE}, \textit{yxcD} we find
 \begin{minted}{pycon}
 >>> q, p = LogisticRegression.calculate(model, [6, -173.143442352])
 >>> print("class OP: probability =", p, "class NOP: probability =", q)
@@ -270,9 +272,9 @@ The leave-one-out analysis shows that the prediction of the logistic regression 
 
 \subsection{Logistic Regression, Linear Discriminant Analysis, and Support Vector Machines}
 
-The logistic regression model is similar to linear discriminant analysis. In linear discriminant analysis, the class probabilities also follow equations (\ref{eq:OP}) and (\ref{eq:NOP}). However, instead of estimating the coefficients $\beta$ directly, we first fit a normal distribution to the predictor variables $x$. The coefficients $\beta$ are then calculated from the means and covariances of the normal distribution. If the distribution of $x$ is indeed normal, then we expect linear discriminant analysis to perform better than the logistic regression model. The logistic regression model, on the other hand, is more robust to deviations from normality.
+The logistic regression model is similar to linear discriminant analysis. In linear discriminant analysis, the class probabilities also follow the OP and NOP equations introduced in Section~\ref{sec:LogisticRegressionBackground}. However, instead of estimating the coefficients $\beta$ directly, we first fit a normal distribution to the predictor variables $x$. The coefficients $\beta$ are then calculated from the means and covariances of the normal distribution. If the distribution of $x$ is indeed normal, then we expect linear discriminant analysis to perform better than the logistic regression model. The logistic regression model, on the other hand, is more robust to deviations from normality.
 
-Another similar approach is a support vector machine with a linear kernel. Such an SVM also uses a linear combination of the predictors, but estimates the coefficients $\beta$ from the predictor variables $x$ near the boundary region between the classes. If the logistic regression model (equations (\ref{eq:OP}) and (\ref{eq:NOP})) is a good description for $x$ away from the boundary region, we expect the logistic regression model to perform better than an SVM with a linear kernel, as it relies on more data. If not, an SVM with a linear kernel may perform better.
+Another similar approach is a support vector machine with a linear kernel. Such an SVM also uses a linear combination of the predictors, but estimates the coefficients $\beta$ from the predictor variables $x$ near the boundary region between the classes. If the logistic regression model (OP and NOP equations in Section~\ref{sec:LogisticRegressionBackground})) is a good description for $x$ away from the boundary region, we expect the logistic regression model to perform better than an SVM with a linear kernel, as it relies on more data. If not, an SVM with a linear kernel may perform better.
 
 Trevor Hastie, Robert Tibshirani, and Jerome Friedman: \textit{The Elements of Statistical Learning. Data Mining, Inference, and Prediction}. Springer Series in Statistics, 2001. Chapter 4.4.
 
