@@ -3,7 +3,7 @@ Biopython Documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Biopython Tutorial & Cookbook:
+   :caption: Biopython Tutorial and Cookbook:
 
    chapter_introduction
    chapter_quick_start
